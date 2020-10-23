@@ -1,0 +1,1058 @@
+#include <iostream>
+#include <time.h>
+#include <cstdlib>
+#include <iomanip> 
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+void random()
+{
+	int count = 1 + rand() % 50;
+
+	int* mass = new int[count];
+
+	for (int i = 0; i < count; i++)
+	{
+		mass[i] = 1 + rand() % 30;
+	}
+
+	int kvant = 1 + rand() % 49;
+	int min = kvant;
+	int now = -1;
+	int iter = 1; //номер итерации
+	int Summ = kvant;
+	int ost = kvant;
+	bool finish = 0; // Все процессы выполнены
+
+	if (count < 21)
+	{
+
+		system("cls");
+
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Номер процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << i + 1 << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Время процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << mass[i] << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+		cout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+		cout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+		cout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+
+		while (finish != 1)
+		{
+			bool bug = 0;
+			min = ost;
+			for (int i = 0; i < count; i++)
+				if ((min > mass[i]) & (mass[i] > 0))
+					min = mass[i];
+
+			if (ost == min)
+			{
+				for (int i = 0; i < count; i++)
+				{
+					if (ost == mass[i])
+					{
+						cout << "|";
+						cout.width(15);
+						cout << " " << "|";
+						cout.width(15);
+						cout << " " << "|";
+						Summ = ost;
+						bug = 1;
+						break;
+					}
+				}
+				if (bug == 0)
+				{
+					cout << "|";
+					cout.width(15);
+					cout << iter << "|";
+					if (iter != 1)
+					{
+						kvant = 1 + rand() % 49;
+						Summ = kvant + ost;
+					}
+					cout.width(15);
+					cout << kvant << "|";
+					iter++;
+				}
+			}
+			else if (iter == 1)
+			{
+				cout << "|";
+				cout.width(15);
+				cout << iter << "|";
+				iter++;
+				cout.width(15);
+				cout << kvant << "|";
+			}
+			else
+			{
+				cout << "|";
+				cout.width(15);
+				cout << " " << "|";
+				cout.width(15);
+				cout << " " << "|";
+				Summ = ost;
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+				{
+					ost = Summ - mass[i];
+					now = i;
+				}
+			}
+
+			cout.width(15);
+			cout << Summ << "|";
+
+			if (mass[now] <= 0)
+			{
+				cout.width(15);
+				cout << "-" << "|";
+				cout.width(15);
+				cout << "-" << "|";
+				ost = Summ;
+			}
+			else
+			{
+				cout.width(15);
+				cout << now + 1 << "|";
+				cout.width(15);
+				cout << mass[now] << "|";
+			}
+			cout.width(15);
+			cout << ost << "|" << endl;
+
+			mass[now] = -1;
+			for (int i = 0; i < count; i++)
+			{
+				if (mass[i] != -1)
+				{
+					finish = 0;
+					break;
+				}
+				else
+				{
+					finish = 1;
+				}
+			}
+		}
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	}
+	else
+	{
+	system("cls");
+
+	ofstream fout("out.txt");
+
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Номер процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << i + 1 << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Время процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << mass[i] << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+	fout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+	fout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+	while (finish != 1)
+	{
+		bool bug = 0;
+		min = ost;
+		for (int i = 0; i < count; i++)
+			if ((min > mass[i]) & (mass[i] > 0))
+				min = mass[i];
+
+		if (ost == min)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				if (ost == mass[i])
+				{
+					fout << "|";
+					fout.width(15);
+					fout << " " << "|";
+					fout.width(15);
+					fout << " " << "|";
+					Summ = ost;
+					bug = 1;
+					break;
+				}
+			}
+			if (bug == 0)
+			{
+				fout << "|";
+				fout.width(15);
+				fout << iter << "|";
+				if (iter != 1)
+				{
+					kvant = 1 + rand() % 49;
+					Summ = kvant + ost;
+				}
+				fout.width(15);
+				fout << kvant << "|";
+				iter++;
+			}
+		}
+		else if (iter == 1)
+		{
+			fout << "|";
+			fout.width(15);
+			fout << iter << "|";
+			iter++;
+			fout.width(15);
+			fout << kvant << "|";
+		}
+		else
+		{
+			fout << "|";
+			fout.width(15);
+			fout << " " << "|";
+			fout.width(15);
+			fout << " " << "|";
+			Summ = ost;
+		}
+
+
+		for (int i = 0; i < count; i++)
+		{
+			if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+			{
+				ost = Summ - mass[i];
+				now = i;
+			}
+		}
+
+		fout.width(15);
+		fout << Summ << "|";
+
+		if (mass[now] <= 0)
+		{
+			fout.width(15);
+			fout << "-" << "|";
+			fout.width(15);
+			fout << "-" << "|";
+			ost = Summ;
+		}
+		else
+		{
+			fout.width(15);
+			fout << now + 1 << "|";
+			fout.width(15);
+			fout << mass[now] << "|";
+		}
+		fout.width(15);
+		fout << ost << "|" << endl;
+
+		mass[now] = -1;
+		for (int i = 0; i < count; i++)
+		{
+			if (mass[i] != -1)
+			{
+				finish = 0;
+				break;
+			}
+			else
+			{
+				finish = 1;
+			}
+		}
+	}
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout.close();
+	}
+}
+
+void keyboard()
+{
+	int kvant = 1 + rand() % 49;
+	int min = kvant;
+	int now = -1;
+	int iter = 1; //номер итерации
+	int Summ = kvant;
+	int ost = kvant;
+	bool finish = 0; // Все процессы выполнены
+	int count = 0;
+	
+	cout << "Введите количество процессов:" << endl;
+	cin >> count;
+
+	int* mass = new int[count];
+
+	for (int i = 0; i < count; i++)
+	{
+		cout << "Введите время исполнения " << i + 1 << " процесса: " << endl;
+		cin >> mass[i];
+	}
+
+	if (count < 21)
+	{
+
+		system("cls");
+
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Номер процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << i + 1 << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Время процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << mass[i] << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+		cout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+		cout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+		cout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+
+		while (finish != 1)
+		{
+			bool bug = 0;
+			min = ost;
+			for (int i = 0; i < count; i++)
+				if ((min > mass[i]) & (mass[i] > 0))
+					min = mass[i];
+
+			if (ost == min)
+			{
+				for (int i = 0; i < count; i++)
+				{
+					if (ost == mass[i])
+					{
+						cout << "|";
+						cout.width(15);
+						cout << " " << "|";
+						cout.width(15);
+						cout << " " << "|";
+						Summ = ost;
+						bug = 1;
+						break;
+					}
+				}
+				if (bug == 0)
+				{
+					cout << "|";
+					cout.width(15);
+					cout << iter << "|";
+					if (iter != 1)
+					{
+						kvant = 1 + rand() % 49;
+						Summ = kvant + ost;
+					}
+					cout.width(15);
+					cout << kvant << "|";
+					iter++;
+				}
+			}
+			else if (iter == 1)
+			{
+				cout << "|";
+				cout.width(15);
+				cout << iter << "|";
+				iter++;
+				cout.width(15);
+				cout << kvant << "|";
+			}
+			else
+			{
+				cout << "|";
+				cout.width(15);
+				cout << " " << "|";
+				cout.width(15);
+				cout << " " << "|";
+				Summ = ost;
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+				{
+					ost = Summ - mass[i];
+					now = i;
+				}
+			}
+
+			cout.width(15);
+			cout << Summ << "|";
+
+			if (mass[now] <= 0)
+			{
+				cout.width(15);
+				cout << "-" << "|";
+				cout.width(15);
+				cout << "-" << "|";
+				ost = Summ;
+			}
+			else
+			{
+				cout.width(15);
+				cout << now + 1 << "|";
+				cout.width(15);
+				cout << mass[now] << "|";
+			}
+			cout.width(15);
+			cout << ost << "|" << endl;
+
+			mass[now] = -1;
+			for (int i = 0; i < count; i++)
+			{
+				if (mass[i] != -1)
+				{
+					finish = 0;
+					break;
+				}
+				else
+				{
+					finish = 1;
+				}
+			}
+		}
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	}
+	else
+	{
+	system("cls");
+
+	ofstream fout("out.txt");
+
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Номер процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << i + 1 << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Время процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << mass[i] << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+	fout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+	fout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+	while (finish != 1)
+	{
+		bool bug = 0;
+		min = ost;
+		for (int i = 0; i < count; i++)
+			if ((min > mass[i]) & (mass[i] > 0))
+				min = mass[i];
+
+		if (ost == min)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				if (ost == mass[i])
+				{
+					fout << "|";
+					fout.width(15);
+					fout << " " << "|";
+					fout.width(15);
+					fout << " " << "|";
+					Summ = ost;
+					bug = 1;
+					break;
+				}
+			}
+			if (bug == 0)
+			{
+				fout << "|";
+				fout.width(15);
+				fout << iter << "|";
+				if (iter != 1)
+				{
+					kvant = 1 + rand() % 49;
+					Summ = kvant + ost;
+				}
+				fout.width(15);
+				fout << kvant << "|";
+				iter++;
+			}
+		}
+		else if (iter == 1)
+		{
+			fout << "|";
+			fout.width(15);
+			fout << iter << "|";
+			iter++;
+			fout.width(15);
+			fout << kvant << "|";
+		}
+		else
+		{
+			fout << "|";
+			fout.width(15);
+			fout << " " << "|";
+			fout.width(15);
+			fout << " " << "|";
+			Summ = ost;
+		}
+
+
+		for (int i = 0; i < count; i++)
+		{
+			if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+			{
+				ost = Summ - mass[i];
+				now = i;
+			}
+		}
+
+		fout.width(15);
+		fout << Summ << "|";
+
+		if (mass[now] <= 0)
+		{
+			fout.width(15);
+			fout << "-" << "|";
+			fout.width(15);
+			fout << "-" << "|";
+			ost = Summ;
+		}
+		else
+		{
+			fout.width(15);
+			fout << now + 1 << "|";
+			fout.width(15);
+			fout << mass[now] << "|";
+		}
+		fout.width(15);
+		fout << ost << "|" << endl;
+
+		mass[now] = -1;
+		for (int i = 0; i < count; i++)
+		{
+			if (mass[i] != -1)
+			{
+				finish = 0;
+				break;
+			}
+			else
+			{
+				finish = 1;
+			}
+		}
+	}
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout.close();
+	}
+}
+
+void sir()
+{
+	string line;
+	ifstream in;
+	in.open("in.txt");
+	int count = 0;
+	if (in.is_open())
+	{
+		getline(in, line);
+		count = stoi(line);
+	}
+
+	int kvant = 1 + rand() % 49;
+	int min = kvant;
+	int now = -1;
+	int iter = 1; //номер итерации
+	int Summ = kvant;
+	int ost = kvant;
+	bool finish = 0; // Все процессы выполнены
+
+	int* mass = new int[count];
+
+	for (int i = 0; i < count; i++)
+	{
+		getline(in, line);
+		mass[i] = stoi(line);
+	}
+	in.close();
+
+	if (count < 21)
+	{
+		system("cls");
+
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Номер процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << i + 1 << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+		cout << "|";
+		cout.width(15);
+		cout << "Время процесса";
+		cout << "|";
+		for (int i = 0; i < count; i++)
+		{
+			cout.width(5);
+			cout << mass[i] << "|";
+		}
+		cout << endl;
+		cout << "+---------------+";
+		for (int i = 0; i < count; i++)
+		{
+			cout << "-----+";
+		}
+		cout << endl;
+
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+		cout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+		cout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+		cout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+		while (finish != 1)
+		{
+			bool bug = 0;
+			min = ost;
+			for (int i = 0; i < count; i++)
+				if ((min > mass[i]) & (mass[i] > 0))
+					min = mass[i];
+
+			if (ost == min)
+			{
+				for (int i = 0; i < count; i++)
+				{
+					if (ost == mass[i])
+					{
+						cout << "|";
+						cout.width(15);
+						cout << " " << "|";
+						cout.width(15);
+						cout << " " << "|";
+						Summ = ost;
+						bug = 1;
+						break;
+					}
+				}
+				if (bug == 0)
+				{
+					cout << "|";
+					cout.width(15);
+					cout << iter << "|";
+					if (iter != 1)
+					{
+						kvant = 1 + rand() % 49;
+						Summ = kvant + ost;
+					}
+					cout.width(15);
+					cout << kvant << "|";
+					iter++;
+				}
+			}
+			else if (iter == 1)
+			{
+				cout << "|";
+				cout.width(15);
+				cout << iter << "|";
+				iter++;
+				cout.width(15);
+				cout << kvant << "|";
+			}
+			else
+			{
+				cout << "|";
+				cout.width(15);
+				cout << " " << "|";
+				cout.width(15);
+				cout << " " << "|";
+				Summ = ost;
+			}
+
+
+			for (int i = 0; i < count; i++)
+			{
+				if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+				{
+					ost = Summ - mass[i];
+					now = i;
+				}
+			}
+
+			cout.width(15);
+			cout << Summ << "|";
+
+			if (mass[now] <= 0)
+			{
+				cout.width(15);
+				cout << "-" << "|";
+				cout.width(15);
+				cout << "-" << "|";
+				ost = Summ;
+			}
+			else
+			{
+				cout.width(15);
+				cout << now + 1 << "|";
+				cout.width(15);
+				cout << mass[now] << "|";
+			}
+			cout.width(15);
+			cout << ost << "|" << endl;
+
+			mass[now] = -1;
+			for (int i = 0; i < count; i++)
+			{
+				if (mass[i] != -1)
+				{
+					finish = 0;
+					break;
+				}
+				else
+				{
+					finish = 1;
+				}
+			}
+		}
+		cout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	}
+	else
+	{
+	system("cls");
+
+	ofstream fout("out.txt");
+
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Номер процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << i + 1 << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+	fout << "|";
+	fout.width(15);
+	fout << "Время процесса";
+	fout << "|";
+	for (int i = 0; i < count; i++)
+	{
+		fout.width(5);
+		fout << mass[i] << "|";
+	}
+	fout << endl;
+	fout << "+---------------+";
+	for (int i = 0; i < count; i++)
+	{
+		fout << "-----+";
+	}
+	fout << endl;
+
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout << "|     Номер     | Квант времени |   Суммарное   |     Номер     |     Время     |   Оставшееся  |" << endl;
+	fout << "|    итераци    |       ЦП      |   доступное   |  выбранного   |  выбранного   |   время ЦП    |" << endl;
+	fout << "|               |               |   время ЦП    |    процесса   |    процесса   |               |" << endl;
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+
+	while (finish != 1)
+	{
+		bool bug = 0;
+		min = ost;
+		for (int i = 0; i < count; i++)
+			if ((min > mass[i]) & (mass[i] > 0))
+				min = mass[i];
+
+		if (ost == min)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				if (ost == mass[i])
+				{
+					fout << "|";
+					fout.width(15);
+					fout << " " << "|";
+					fout.width(15);
+					fout << " " << "|";
+					Summ = ost;
+					bug = 1;
+					break;
+				}
+			}
+			if (bug == 0)
+			{
+				fout << "|";
+				fout.width(15);
+				fout << iter << "|";
+				if (iter != 1)
+				{
+					kvant = 1 + rand() % 49;
+					Summ = kvant + ost;
+				}
+				fout.width(15);
+				fout << kvant << "|";
+				iter++;
+			}
+		}
+		else if (iter == 1)
+		{
+			fout << "|";
+			fout.width(15);
+			fout << iter << "|";
+			iter++;
+			fout.width(15);
+			fout << kvant << "|";
+		}
+		else
+		{
+			fout << "|";
+			fout.width(15);
+			fout << " " << "|";
+			fout.width(15);
+			fout << " " << "|";
+			Summ = ost;
+		}
+
+
+		for (int i = 0; i < count; i++)
+		{
+			if ((Summ - mass[i] >= 0) & ((Summ - mass[i]) <= Summ) & (mass[i] != 0))
+			{
+				ost = Summ - mass[i];
+				now = i;
+			}
+		}
+
+		fout.width(15);
+		fout << Summ << "|";
+
+		if (mass[now] <= 0)
+		{
+			fout.width(15);
+			fout << "-" << "|";
+			fout.width(15);
+			fout << "-" << "|";
+			ost = Summ;
+		}
+		else
+		{
+			fout.width(15);
+			fout << now + 1 << "|";
+			fout.width(15);
+			fout << mass[now] << "|";
+		}
+		fout.width(15);
+		fout << ost << "|" << endl;
+
+		mass[now] = -1;
+		for (int i = 0; i < count; i++)
+		{
+			if (mass[i] != -1)
+			{
+				finish = 0;
+				break;
+			}
+			else
+			{
+				finish = 1;
+			}
+		}
+	}
+	fout << "+---------------+---------------+---------------+---------------+---------------+---------------+" << endl;
+	fout.close();
+	}
+}
+
+
+int main()
+{
+	system("mode con cols=150 lines=50");
+	setlocale(LC_ALL, "Russian");
+	srand(time(NULL));
+	bool flag = 1;
+	char ch = '0';
+	while (flag != 0)
+	{
+
+		cout << "Введите цифру:" << endl;
+		cout << "0 чтобы выйти" << endl;
+		cout << "1 чтобы ввести с клавиатуры" << endl;
+		cout << "2 чтобы ввести рандомом" << endl;
+		cout << "3 чтобы ввести файлом" << endl;
+
+		ws(cin);
+		ch = getchar();
+
+
+		switch (ch)
+		{
+		case '0':
+			flag = 0;
+			break;
+		case '1':
+			keyboard();
+			break;
+		case '2':
+			random();
+			break;
+		case '3':
+			sir();
+			break;
+		}
+	}
+}
