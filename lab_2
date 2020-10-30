@@ -1,0 +1,137 @@
+#include<locale.h>
+#include <iostream>
+#include <iomanip>
+
+#define QUEUE struct QUEUE
+
+using namespace std;
+
+QUEUE
+{
+	int ID;
+	int CPU_burst;
+};
+
+void gant(QUEUE* arr, int N)
+{
+	double count = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+		count += arr[i].CPU_burst;
+	}
+	cout << "T";
+	for (int i = 0; i < count; i++)
+	{
+		cout.width(5);
+		cout << i + 1;
+	}
+	cout << endl;
+	count = 0;
+	double gcount = 0;
+	double scount = 0;
+	int j = 0;
+	for (int i = 0; i < N; i++)
+	{
+		cout << "P";
+		cout.setf(ios::left);
+		cout.width(4);
+		cout << arr[i].ID;
+		if (j == 0)
+		{
+			for (j; j < arr[i].CPU_burst; j++)
+			{
+				cout.width(5);
+				cout << "И";
+				count++;
+				scount++;
+			}
+			cout << endl;
+		}
+		else
+		{
+			for (int k = 0; k < count; k++)
+			{
+				cout.width(5);
+				cout << "Г";
+				gcount++;
+				scount++;
+			}
+			for (int k = 0; k < arr[i].CPU_burst; k++)
+			{
+				cout.width(5);
+				cout << "И";
+				count++;
+				scount++;
+			}
+			cout << endl;
+		}
+	}
+	cout << endl;
+	cout << "Cреднее время ожидания = " << setprecision(2) << gcount / N;
+	cout << endl;
+	cout << "Среднее полное время выполнения = " << scount/N;
+}
+
+
+int main()
+{
+	setlocale(LC_ALL, "RUS");
+	int N; //количество процессов
+	int temp = 0;
+	int temp1 = 0;
+	char ch;
+	bool sjf = 0;
+	cout << "Количество процессов: ";
+	cin >> N;
+	cout << endl;
+
+	QUEUE* arr;
+	arr = new QUEUE[N]; //выделение памяти.
+
+	for (int i = 0; i < N; i++)
+	{
+		arr[i].ID = i + 1;
+		cout << "Введите время выполнения " << i + 1 << " процесса: ";
+		cin >> arr[i].CPU_burst;
+	}
+
+	cout << "Какой алгоритм предпочитаете ?" << endl;
+	cout << "1 - FCFS" << endl;
+	cout << "2 - SJF" << endl;
+	getchar();
+	ch = getchar();
+
+	if (ch == '1') 
+	{
+		gant(arr, N);
+	}
+	else if (ch == '2')
+	{
+		for (int i = 0; i < N - 1; i++) 
+		{
+			for (int j = 0; j < N - i - 1; j++) 
+			{
+				if (arr[j].CPU_burst > arr[j + 1].CPU_burst) 
+				{
+					temp = arr[j].CPU_burst;
+					temp1 = arr[j].ID;
+					arr[j].CPU_burst = arr[j + 1].CPU_burst;
+					arr[j].ID = arr[j + 1].ID;
+					arr[j + 1].CPU_burst = temp;
+					arr[j + 1].ID = temp1;
+				}
+			}
+		}
+		gant(arr, N);
+	}
+	else 
+	{
+		cout << "Try again later";
+	}
+
+	getchar();
+	getchar();
+}
+
+
