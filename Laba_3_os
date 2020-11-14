@@ -91,6 +91,8 @@ void Sjf(QUEUE* arr, int N, int kvant)
 	int iter = 0;
 	int number = 0;
 	bool done = 0;
+	double gcount = 0;
+	double scount = 0;
 	string G = " Г |";
 	string I = " И |";
 	string R = "   |";
@@ -158,9 +160,14 @@ void Sjf(QUEUE* arr, int N, int kvant)
 					arr[i].str += I;
 					number = i;
 					now = 0;
+					scount++;
 				}
 				else
+				{
 					arr[i].str += G;
+					gcount++;
+					scount++;
+				}
 			}
 			else
 				arr[i].str += R;
@@ -208,6 +215,12 @@ void Sjf(QUEUE* arr, int N, int kvant)
 		cout.width(4);
 		cout << "---+";
 	}
+
+	cout << endl;
+	cout << "Cреднее время выполнения = " << setprecision(2) << scount / N;
+	cout << endl;
+	cout << "Среднее время ожидания = " << gcount / N;
+
 }
 
 void FCFS(QUEUE* arr, int N, int kvant)
@@ -215,6 +228,8 @@ void FCFS(QUEUE* arr, int N, int kvant)
 	int iter = 0;
 	int number = -1;
 	bool done = 0;
+	double gcount = 0;
+	double scount = 0;
 	string G = " Г |";
 	string I = " И |";
 	string R = "   |";
@@ -283,9 +298,14 @@ void FCFS(QUEUE* arr, int N, int kvant)
 					arr[i].str += I;
 					number = i;
 					now = 0;
+					scount++;
 				}
 				else
+				{
 					arr[i].str += G;
+					gcount++;
+					scount++;
+				}
 			}
 			else
 				arr[i].str += R;
@@ -334,6 +354,11 @@ void FCFS(QUEUE* arr, int N, int kvant)
 		cout.width(4);
 		cout << "---+";
 	}
+
+	cout << endl;
+	cout << "Cреднее время выполнения = " << setprecision(2) << scount / N;
+	cout << endl;
+	cout << "Среднее время ожидания = " << gcount / N;
 }
 
 int main()
