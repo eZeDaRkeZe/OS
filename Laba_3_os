@@ -1,0 +1,397 @@
+#include<locale.h>
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+#define QUEUE struct QUEUE
+
+using namespace std;
+
+QUEUE
+{
+	int ID = -1;
+	int CPU_burst = -1;
+	int time = -1;
+	string str;
+};
+
+void Out(QUEUE* arr, int N)
+{
+	system("cls");
+
+	cout << endl;
+	cout << "+----------------------------------------+";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "-----+";
+	}
+	cout << endl << "|";
+	cout.setf(ios::left);
+	cout.width(40);
+	cout << "Процесс";
+	cout << "|";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "P";
+		cout.width(4);
+		cout << i;
+		cout << "|";
+	}
+	cout << endl;
+	cout << "+----------------------------------------+";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "-----+";
+	}
+	cout << endl;
+	cout << "|";
+	cout.width(40);
+	cout << "Продолжительность очередного CPU burst";
+	cout << "|";
+	for (int i = 0; i < N; i++)
+	{
+		cout.width(5);
+		cout << arr[i].CPU_burst;
+		cout << "|";
+	}
+	cout << endl;
+	cout << "+----------------------------------------+";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "-----+";
+	}
+	cout << endl;
+	cout << "|";
+	cout.width(40);
+	cout << "Время появления в очереди";
+	cout << "|";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout.width(5);
+		cout << arr[i].time;
+		cout << "|";
+	}
+	cout << endl;
+	cout << "+----------------------------------------+";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "-----+";
+	}
+	cout << endl;
+}
+
+void Sjf(QUEUE* arr, int N, int kvant)
+{
+	int iter = 0;
+	int number = 0;
+	bool done = 0;
+	string G = " Г |";
+	string I = " И |";
+	string R = "   |";
+
+	int full = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+		full += arr[i].CPU_burst;
+	}
+
+	cout << "+-----+";
+
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+	cout << endl << "|";
+
+	cout.width(5);
+	cout << "T";
+	cout << "|";
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(3);
+		cout << i + 1;
+		cout << "|";
+	}
+	cout << endl;
+	cout << "+-----+";
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+	cout << endl;
+	while (done == 0)
+	{
+		QUEUE temp;
+		if ((iter % kvant) == 0)
+		{
+			for (int i = 0; i < N - 1; i++) {
+				for (int j = 0; j < N - i - 1; j++) 
+				{
+					if (arr[j].CPU_burst > arr[j + 1].CPU_burst) 
+					{
+						// меняем элементы местами
+						temp = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = temp;
+					}
+				}
+			}
+		}
+
+
+		bool now = 1;
+		for (int i = 0; i < N; i++)
+		{
+			if ((arr[i].CPU_burst != 0) & (arr[i].time <= iter))
+			{
+				if (now == 1)
+				{
+					arr[i].str += I;
+					number = i;
+					now = 0;
+				}
+				else
+					arr[i].str += G;
+			}
+			else
+				arr[i].str += R;
+		}
+
+		arr[number].CPU_burst--;
+		iter++;
+
+
+		for (int i = 0; i < N; i++)
+		{
+			if (arr[i].CPU_burst == 0)
+			{
+				done = 1;
+			}
+			else
+			{
+				done = 0;
+				break;
+			}
+		}
+	}
+
+	QUEUE temp;
+
+	for (int i = 0; i < N - 1; i++) {
+		for (int j = 0; j < N - i - 1; j++) {
+			if (arr[j].ID> arr[j + 1].ID) {
+				// меняем элементы местами
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+		}
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << arr[i].str << endl;
+	}
+	cout << "+-----+";
+
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+}
+
+void FCFS(QUEUE* arr, int N, int kvant)
+{
+	int iter = 0;
+	int number = -1;
+	bool done = 0;
+	string G = " Г |";
+	string I = " И |";
+	string R = "   |";
+
+	int full = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+		full += arr[i].CPU_burst;
+	}
+
+	cout << "+-----+";
+
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+	cout << endl << "|";
+
+	cout.width(5);
+	cout << "T";
+	cout << "|";
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(3);
+		cout << i + 1;
+		cout << "|";
+	}
+	cout << endl;
+	cout << "+-----+";
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+	cout << endl;
+
+
+	while (done == 0)
+	{
+		QUEUE temp;
+
+		bool now = 1;
+
+		for (int i = 0; i < N - 1; i++) {
+			for (int j = 0; j < N - i - 1; j++)
+			{
+				if (arr[j].time > arr[j + 1].time)
+				{
+					// меняем элементы местами
+					temp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = temp;
+				}
+			}
+		}
+
+
+		for (int i = 0; i < N; i++)
+		{
+			if ((arr[i].CPU_burst != 0) & (arr[i].time <= iter))
+			{
+				if (now == 1) 
+				{
+					arr[i].str += I;
+					number = i;
+					now = 0;
+				}
+				else
+					arr[i].str += G;
+			}
+			else
+				arr[i].str += R;
+		}
+
+
+		arr[number].CPU_burst--;
+		iter++;
+
+
+		for (int i = 0; i < N; i++)
+		{
+			if (arr[i].CPU_burst == 0)
+			{
+				done = 1;
+			}
+			else
+			{
+				done = 0;
+				break;
+			}
+		}
+	}
+
+	QUEUE temp;
+
+	for (int i = 0; i < N - 1; i++) {
+		for (int j = 0; j < N - i - 1; j++) {
+			if (arr[j].ID > arr[j + 1].ID) {
+				// меняем элементы местами
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+		}
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << arr[i].str << endl;
+	}
+	cout << "+-----+";
+
+	for (int i = 0; i < full; i++)
+	{
+		cout.width(4);
+		cout << "---+";
+	}
+}
+
+int main()
+{
+	setlocale(LC_ALL, "RUS");
+	int N; //количество процессов
+	char ch; //выбор алгоритма
+	int kvant;
+
+	srand(time(NULL));
+	kvant = 2;
+	cout << kvant << endl;
+
+	cout << "Количество процессов: ";
+	cin >> N;
+	cout << endl;
+
+	QUEUE* arr;
+	arr = new QUEUE[N]; //выделение памяти.
+
+	for (int i = 0; i < N; i++)
+	{
+		arr[i].ID = i + 1;
+		cout << "Введите время выполнения " << i + 1 << " процесса: ";
+		cin >> arr[i].CPU_burst;
+		cout << "Введите время появления в очереди ";
+		cin >> arr[i].time;
+		if (i<10)
+			arr[i].str = "|P" + to_string(i) + "   |";
+		else
+			arr[i].str = "|P" + to_string(i) + "  |";
+	}
+
+
+
+	Out(arr,N);
+
+	cout << "Какой алгоритм предпочитаете ?" << endl;
+	cout << "1 - FCFS" << endl;
+	cout << "2 - SJF" << endl;
+	getchar();
+	ch = getchar();
+
+	if (ch == '1') 
+	{
+		FCFS(arr, N, kvant);
+	}
+	else if (ch == '2')
+	{
+		Sjf(arr, N, kvant);
+	}
+	else 
+	{
+		cout << "Try again later";
+	}
+
+	getchar();
+	getchar();
+}
+
+
