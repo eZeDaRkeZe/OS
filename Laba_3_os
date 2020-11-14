@@ -369,8 +369,12 @@ int main()
 	int kvant;
 
 	srand(time(NULL));
-	kvant = 2;
+	kvant = 0;
 	cout << kvant << endl;
+	
+	cout << "Введите квант: ";
+	cin >> kvantl
+	cout << endl;
 
 	cout << "Количество процессов: ";
 	cin >> N;
