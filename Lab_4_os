@@ -13,6 +13,7 @@ QUEUE
 	int CPU_burst = -1;
 	int time = -1;
 	string str;
+	int prior;
 };
 
 void Out(QUEUE* arr, int N)
@@ -77,6 +78,28 @@ void Out(QUEUE* arr, int N)
 		cout << "|";
 	}
 	cout << endl;
+
+	cout << "+----------------------------------------+";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout << "-----+";
+	}
+	cout << endl;
+
+	cout << "|";
+	cout.width(40);
+	cout << "Приоритеты процессов";
+	cout << "|";
+
+	for (int i = 0; i < N; i++)
+	{
+		cout.width(5);
+		cout << arr[i].prior;
+		cout << "|";
+	}
+	cout << endl;
+
 	cout << "+----------------------------------------+";
 
 	for (int i = 0; i < N; i++)
@@ -135,9 +158,9 @@ void Sjf(QUEUE* arr, int N)
 		QUEUE temp;
 
 		for (int i = 0; i < N - 1; i++) {
-			for (int j = 0; j < N - i - 1; j++) 
+			for (int j = 0; j < N - i - 1; j++)
 			{
-				if (arr[j].CPU_burst > arr[j + 1].CPU_burst) 
+				if (arr[j].prior > arr[j + 1].prior)
 				{
 					// меняем элементы местами
 					temp = arr[j];
@@ -193,7 +216,7 @@ void Sjf(QUEUE* arr, int N)
 
 	for (int i = 0; i < N - 1; i++) {
 		for (int j = 0; j < N - i - 1; j++) {
-			if (arr[j].ID> arr[j + 1].ID) {
+			if (arr[j].ID > arr[j + 1].ID) {
 				// меняем элементы местами
 				temp = arr[j];
 				arr[j] = arr[j + 1];
@@ -242,15 +265,17 @@ int main()
 		cin >> arr[i].CPU_burst;
 		cout << "Введите время появления в очереди ";
 		cin >> arr[i].time;
-		if (i<10)
+		if (i < 10)
 			arr[i].str = "|P" + to_string(i) + "   |";
 		else
 			arr[i].str = "|P" + to_string(i) + "  |";
+		cout << "Введите приоритет " << i + 1 << " процесса: ";
+		cin >> arr[i].prior;
 	}
 
 
 
-	Out(arr,N);
+	Out(arr, N);
 
 	Sjf(arr, N);
 
@@ -258,5 +283,3 @@ int main()
 	getchar();
 	getchar();
 }
-
-
