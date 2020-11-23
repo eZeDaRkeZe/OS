@@ -373,7 +373,7 @@ int main()
 	cout << kvant << endl;
 	
 	cout << "Введите квант: ";
-	cin >> kvantl
+	cin >> kvantl;
 	cout << endl;
 
 	cout << "Количество процессов: ";
