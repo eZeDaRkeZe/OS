@@ -366,7 +366,7 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	int N; //количество процессов
 	char ch; //выбор алгоритма
-	int kvant = 0;
+	int kvant = 1;
 
 	srand(time(NULL));
 	
