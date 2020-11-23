@@ -366,11 +366,9 @@ int main()
 	setlocale(LC_ALL, "RUS");
 	int N; //количество процессов
 	char ch; //выбор алгоритма
-	int kvant;
+	int kvant = 0;
 
 	srand(time(NULL));
-	kvant = 0;
-	cout << kvant << endl;
 	
 	cout << "Введите квант: ";
 	cin >> kvant;
